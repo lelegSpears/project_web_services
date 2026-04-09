@@ -1,12 +1,16 @@
 package com.lelegspears.project_wev_services.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Setter
@@ -28,6 +32,11 @@ public class User implements Serializable {
     @NotBlank
     private String password;
 
+    @Setter(AccessLevel.NONE)
+    @JsonIgnore
+    @OneToMany(mappedBy = "client")
+    private List<Order> orders = new ArrayList<>();
+
     public User(){
     }
 
@@ -37,6 +46,16 @@ public class User implements Serializable {
         this.email = email;
         this.phone = phone;
         this.password = password;
+    }
+
+    public void addOrder(Order order) {
+        orders.add(order);
+        order.setClient(this);
+    }
+
+    public void removeOrder(Order order) {
+        orders.remove(order);
+        order.setClient(null);
     }
 
     @Override
