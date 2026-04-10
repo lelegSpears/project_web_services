@@ -1,6 +1,7 @@
 package com.lelegspears.project_wev_services.entities;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lelegspears.project_wev_services.entities.enums.OrderStatus;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -10,7 +11,9 @@ import lombok.Setter;
 import java.io.Serial;
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Setter
 @Getter
@@ -32,9 +35,13 @@ public class Order implements Serializable {
     private User client;
 
     @Setter(AccessLevel.NONE)
+    @Getter(AccessLevel.NONE)
     private Integer orderStatus;
 
-    Order() {
+    @OneToMany(mappedBy = "id.order")
+    private Set<OrderItem> items = new HashSet<>();
+
+    public Order() {
     }
 
     public Order(Long id, Instant moment, User client, OrderStatus  orderStatus) {
@@ -48,6 +55,10 @@ public class Order implements Serializable {
         if(orderStatus != null) {
             this.orderStatus = orderStatus.getCode();
         }
+    }
+
+    public OrderStatus getOrderStatus() {
+        return OrderStatus.valueOf(orderStatus);
     }
 
     @Override

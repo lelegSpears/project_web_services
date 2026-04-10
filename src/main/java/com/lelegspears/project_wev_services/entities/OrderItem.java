@@ -1,5 +1,6 @@
 package com.lelegspears.project_wev_services.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lelegspears.project_wev_services.entities.pk.OrderItemPK;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -17,6 +18,7 @@ public class OrderItem implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @EmbeddedId
+    @JsonIgnore
     @Setter(AccessLevel.NONE)
     private OrderItemPK id;
 
@@ -30,7 +32,7 @@ public class OrderItem implements Serializable {
         this.quantity = quantity;
         this.price = price;
     }
-
+    @JsonIgnore
     public Order getOrder(){
         return id.getOrder();
     }

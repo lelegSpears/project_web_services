@@ -1,5 +1,6 @@
 package com.lelegspears.project_wev_services.entities.pk;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lelegspears.project_wev_services.entities.Order;
 import com.lelegspears.project_wev_services.entities.Product;
 import jakarta.persistence.Embeddable;
@@ -16,6 +17,7 @@ import java.util.Objects;
 public class OrderItemPK {
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore
     private Order order;
     @ManyToOne
     @JoinColumn(name = "product_id")

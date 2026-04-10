@@ -31,6 +31,7 @@ public class User implements Serializable {
     @NotBlank
     private String phone;
     @NotBlank
+    @JsonIgnore
     private String password;
 
     @Setter(AccessLevel.NONE)
