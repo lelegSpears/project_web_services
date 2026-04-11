@@ -27,11 +27,17 @@ public class OrderItem implements Serializable {
 
     public OrderItem() {
     }
+
     public OrderItem(Product product, Order order, Integer quantity, Double price) {
         this.id = new OrderItemPK(order,product);
         this.quantity = quantity;
         this.price = price;
     }
+
+    public Double getTotalValue() {
+        return this.price * this.quantity;
+    }
+
     @JsonIgnore
     public Order getOrder(){
         return id.getOrder();
