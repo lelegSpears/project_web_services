@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Objects;
@@ -30,6 +29,10 @@ public class Product implements Serializable {
     @JoinTable(name= "tb_product_category", joinColumns = @JoinColumn(name = "product_id"), inverseJoinColumns = @JoinColumn(name= "category_id"))
     private Set<Category> categories = new HashSet<>();
 
+    @Getter(AccessLevel.NONE)
+    @OneToMany(mappedBy = "id.product")
+    private Set<OrderItem> items = new HashSet<>();
+
     public void addCategory(Category category) {
         categories.add(category);
         category.getProducts().add(this);
@@ -38,6 +41,15 @@ public class Product implements Serializable {
     public void removeCategory(Category category) {
         categories.remove(category);
         category.getProducts().remove(this);
+    }
+
+    @JsonIgnore
+    public Set<Order> getOrders(){
+        Set<Order> set = new HashSet<>();
+        for(OrderItem x : items){
+            set.add(x.getOrder());
+        }
+        return set;
     }
 
     @Override
