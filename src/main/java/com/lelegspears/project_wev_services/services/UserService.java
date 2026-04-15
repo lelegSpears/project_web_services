@@ -1,10 +1,12 @@
 package com.lelegspears.project_wev_services.services;
 
 import com.lelegspears.project_wev_services.entities.User;
+import com.lelegspears.project_wev_services.services.exceptions.DatabaseException;
 import com.lelegspears.project_wev_services.services.exceptions.ResourceNotFoundException;
 import com.lelegspears.project_wev_services.repositories.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +35,8 @@ public class UserService {
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e){
             throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e){
+            throw new DatabaseException(e.getMessage());
         }
     }
 
