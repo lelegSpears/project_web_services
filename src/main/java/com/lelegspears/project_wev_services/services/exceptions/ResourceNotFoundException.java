@@ -1,4 +1,4 @@
-package com.lelegspears.project_wev_services.exceptions;
+package com.lelegspears.project_wev_services.services.exceptions;
 
 public class ResourceNotFoundException extends RuntimeException {
     private static final long serialVersionUID = 1L;

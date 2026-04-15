@@ -2,7 +2,7 @@ package com.lelegspears.project_wev_services.services;
 
 
 import com.lelegspears.project_wev_services.entities.Order;
-import com.lelegspears.project_wev_services.exceptions.ResourceNotFoundException;
+import com.lelegspears.project_wev_services.services.exceptions.ResourceNotFoundException;
 import com.lelegspears.project_wev_services.repositories.OrderRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
