@@ -25,26 +25,28 @@ public class CategoryService {
         return repository.findAll();
     }
 
-    public Category insert(Category Category){
-        repository.save(Category);
-        return Category;
+    @Transactional
+    public Category insert(Category category){
+        repository.save(category);
+        return category;
     }
 
+    @Transactional
     public void deleteById(Long id){
         try {
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e){
             throw new ResourceNotFoundException(id);
         } catch (DataIntegrityViolationException e){
-            throw new DatabaseException(e.getMessage());
+            throw new DatabaseException("Integrity violation: cannot delete entity");
         }
     }
 
-    @Transactional
+    @Transactional // Dirty Checking, JPA salva automaticamente o objeto
     public Category updateById(Long id, Category newData){
-        Category Category = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-        updateData(Category, newData);
-        return Category;
+        Category category = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        updateData(category, newData);
+        return category;
     }
 
     private void updateData(Category oldData, Category newData){

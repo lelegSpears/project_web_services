@@ -2,6 +2,7 @@ package com.lelegspears.project_wev_services.resources;
 
 import com.lelegspears.project_wev_services.entities.Category;
 import com.lelegspears.project_wev_services.services.CategoryService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,7 +33,7 @@ public class CategoryResource {
     }
 
     @PostMapping
-    public ResponseEntity<Category> insert(@RequestBody Category category){
+    public ResponseEntity<Category> insert(@Valid @RequestBody Category category){
         Category newCategory = service.insert(category);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(newCategory.getId())
@@ -47,7 +48,7 @@ public class CategoryResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Category> updateById(@PathVariable Long id, @RequestBody Category newData){
+    public ResponseEntity<Category> updateById(@PathVariable Long id, @Valid @RequestBody Category newData){
         Category category = service.updateById(id, newData);
         return ResponseEntity.ok().body(category);
     }

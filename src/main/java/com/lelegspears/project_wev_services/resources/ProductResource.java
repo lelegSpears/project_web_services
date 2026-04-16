@@ -2,6 +2,7 @@ package com.lelegspears.project_wev_services.resources;
 
 import com.lelegspears.project_wev_services.entities.Product;
 import com.lelegspears.project_wev_services.services.ProductService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -30,7 +31,7 @@ public class ProductResource {
     }
 
     @PostMapping
-    public ResponseEntity<Product> insert(@RequestBody Product product){
+    public ResponseEntity<Product> insert(@Valid @RequestBody Product product){
         Product newproduct = service.insert(product);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(newproduct.getId())
@@ -45,7 +46,7 @@ public class ProductResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Product> updateById(@PathVariable Long id, @RequestBody Product newData){
+    public ResponseEntity<Product> updateById(@PathVariable Long id, @Valid @RequestBody Product newData){
         Product product = service.updateById(id, newData);
         return ResponseEntity.ok().body(product);
     }

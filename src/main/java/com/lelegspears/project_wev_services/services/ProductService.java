@@ -25,18 +25,20 @@ public class ProductService {
         return repository.findAll();
     }
 
+    @Transactional
     public Product insert(Product product){
         repository.save(product);
         return product;
     }
 
+    @Transactional
     public void deleteById(Long id){
         try {
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e){
             throw new ResourceNotFoundException(id);
         } catch (DataIntegrityViolationException e){
-            throw new DatabaseException(e.getMessage());
+            throw new DatabaseException("Integrity violation: cannot delete entity");
         }
     }
 

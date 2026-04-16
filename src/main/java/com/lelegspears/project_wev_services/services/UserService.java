@@ -25,18 +25,19 @@ public class UserService {
         return repository.findAll();
     }
 
+    @Transactional
     public User insert(User user){
-        repository.save(user);
-        return user;
+        return repository.save(user);
     }
 
+    @Transactional
     public void deleteById(Long id){
         try {
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e){
             throw new ResourceNotFoundException(id);
         } catch (DataIntegrityViolationException e){
-            throw new DatabaseException(e.getMessage());
+            throw new DatabaseException("Integrity violation: cannot delete entity");
         }
     }
 

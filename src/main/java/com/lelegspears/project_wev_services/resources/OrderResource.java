@@ -2,6 +2,7 @@ package com.lelegspears.project_wev_services.resources;
 
 import com.lelegspears.project_wev_services.entities.Order;
 import com.lelegspears.project_wev_services.services.OrderService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,7 +32,7 @@ public class OrderResource {
     }
 
     @PostMapping
-    public ResponseEntity<Order> insert(@RequestBody Order order){
+    public ResponseEntity<Order> insert(@Valid @RequestBody Order order){
         Order newOrder = service.insert(order);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(newOrder.getId())
@@ -46,7 +47,7 @@ public class OrderResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<Order> updateById(@PathVariable Long id, @RequestBody Order newData){
+    public ResponseEntity<Order> updateById(@PathVariable Long id, @Valid @RequestBody Order newData){
         Order order = service.updateById(id, newData);
         return ResponseEntity.ok().body(order);
     }

@@ -2,6 +2,7 @@ package com.lelegspears.project_wev_services.services;
 
 
 import com.lelegspears.project_wev_services.entities.Order;
+import com.lelegspears.project_wev_services.entities.OrderItem;
 import com.lelegspears.project_wev_services.services.exceptions.DatabaseException;
 import com.lelegspears.project_wev_services.services.exceptions.ResourceNotFoundException;
 import com.lelegspears.project_wev_services.repositories.OrderRepository;
@@ -26,18 +27,20 @@ public class OrderService {
         return repository.findAll();
     }
 
+    @Transactional
     public Order insert(Order order){
         repository.save(order);
         return order;
     }
 
+    @Transactional
     public void deleteById(Long id){
         try {
             repository.deleteById(id);
         } catch (EmptyResultDataAccessException e){
             throw new ResourceNotFoundException(id);
         } catch (DataIntegrityViolationException e){
-            throw new DatabaseException(e.getMessage());
+            throw new DatabaseException("Integrity violation: cannot delete entity");
         }
     }
 
@@ -51,5 +54,17 @@ public class OrderService {
     private void updateData(Order oldData, Order newData){
         oldData.setClient(newData.getClient());
         oldData.setMoment(newData.getMoment());
+        oldData.setOrderStatus(newData.getOrderStatus());
+
+        oldData.getItems().clear();
+        for (OrderItem item : newData.getItems()) {
+            item.setOrder(oldData);
+            oldData.getItems().add(item);
+        }
+
+        if (newData.getPayment() != null) {
+            newData.getPayment().setOrder(oldData);
+        }
+        oldData.setPayment(newData.getPayment());
     }
 }

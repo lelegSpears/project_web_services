@@ -2,6 +2,7 @@ package com.lelegspears.project_wev_services.resources;
 
 import com.lelegspears.project_wev_services.entities.User;
 import com.lelegspears.project_wev_services.services.UserService;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -31,7 +32,7 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<User> insert(@RequestBody User user){
+    public ResponseEntity<User> insert(@Valid @RequestBody User user){
         User newUser = service.insert(user);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(newUser.getId())
@@ -46,7 +47,7 @@ public class UserResource {
     }
 
     @PutMapping(value = "/{id}")
-    public ResponseEntity<User> updateById(@PathVariable Long id, @RequestBody User newData){
+    public ResponseEntity<User> updateById(@PathVariable Long id, @Valid @RequestBody User newData){
         User user = service.updateById(id, newData);
         return ResponseEntity.ok().body(user);
     }

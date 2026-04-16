@@ -1,7 +1,9 @@
 package com.lelegspears.project_wev_services.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -27,11 +29,12 @@ public class User implements Serializable {
     private Long id;
     @NotBlank
     private String name;
+    @Email
     private String email;
     @NotBlank
     private String phone;
     @NotBlank
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
     @Setter(AccessLevel.NONE)
