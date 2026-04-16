@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import java.time.Instant;
 import java.util.Arrays;
@@ -30,11 +31,14 @@ public class TestConfig implements CommandLineRunner {
     @Autowired
     private OrderItemRepository orderItemRepository;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
     @Override
     public void run(String... args) throws Exception {
 
         // USER
-        User u1 = new User(null, "Leandro", "leo@email.com", "11999999999", "123456");
+        User u1 = new User(null, "Leandro", "leo@email.com", "11999999999", passwordEncoder.encode("123456"));
 
         // CATEGORY
         Category c1 = new Category("Eletrônicos");
