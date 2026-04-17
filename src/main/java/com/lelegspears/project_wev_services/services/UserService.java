@@ -8,6 +8,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -16,6 +17,9 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     public User findById(Long id){
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
@@ -27,6 +31,7 @@ public class UserService {
 
     @Transactional
     public User insert(User user){
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return repository.save(user);
     }
 
@@ -51,7 +56,9 @@ public class UserService {
     private void updateData(User oldData, User newData){
         oldData.setName(newData.getName());
         oldData.setPhone(newData.getPhone());
-        oldData.setPassword(newData.getPassword());
         oldData.setEmail(newData.getEmail());
+        if (newData.getPassword() != null) {
+            oldData.setPassword(passwordEncoder.encode(newData.getPassword()));
+        }
     }
 }
