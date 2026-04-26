@@ -1,11 +1,14 @@
 package com.lelegspears.project_wev_services.services;
 
+import com.lelegspears.project_wev_services.dtos.UserCreateDTO;
+import com.lelegspears.project_wev_services.dtos.UserResponseDTO;
+import com.lelegspears.project_wev_services.dtos.UserUpdateDTO;
 import com.lelegspears.project_wev_services.entities.User;
+import com.lelegspears.project_wev_services.mappers.UserMapper;
 import com.lelegspears.project_wev_services.services.exceptions.DatabaseException;
 import com.lelegspears.project_wev_services.services.exceptions.ResourceNotFoundException;
 import com.lelegspears.project_wev_services.repositories.UserRepository;
 import jakarta.transaction.Transactional;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,24 +18,33 @@ import java.util.List;
 
 @Service
 public class UserService {
-    @Autowired
-    private UserRepository repository;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final UserMapper userMapper;
+    private final UserRepository repository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
-    public User findById(Long id){
-        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+    public UserService(UserMapper userMapper, UserRepository repository, BCryptPasswordEncoder passwordEncoder) {
+        this.userMapper = userMapper;
+        this.repository = repository;
+        this.passwordEncoder = passwordEncoder;
     }
 
-    public List<User> findAll(){
-        return repository.findAll();
+    public UserResponseDTO findById(Long id){
+        User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        return userMapper.toDTO(user);
+    }
+
+    public List<UserResponseDTO> findAll(){
+        List<User> usersList = repository.findAll();
+        return userMapper.toDTOList(usersList);
     }
 
     @Transactional
-    public User insert(User user){
+    public UserResponseDTO insert(UserCreateDTO userDTO){
+        User user = userMapper.toEntity(userDTO);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return repository.save(user);
+        User userSaved = repository.save(user);
+        return userMapper.toDTO(userSaved);
     }
 
     @Transactional
@@ -47,18 +59,12 @@ public class UserService {
     }
 
     @Transactional
-    public User updateById(Long id, User newData){
+    public UserResponseDTO updateById(Long id, UserUpdateDTO newDataDTO) {
         User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
-        updateData(user, newData);
-        return user;
-    }
-
-    private void updateData(User oldData, User newData){
-        oldData.setName(newData.getName());
-        oldData.setPhone(newData.getPhone());
-        oldData.setEmail(newData.getEmail());
-        if (newData.getPassword() != null) {
-            oldData.setPassword(passwordEncoder.encode(newData.getPassword()));
+        userMapper.updateEntityFromDTO(newDataDTO, user);
+        if (newDataDTO.getPassword() != null && !newDataDTO.getPassword().isBlank()) {
+            user.setPassword(passwordEncoder.encode(newDataDTO.getPassword()));
         }
+        return userMapper.toDTO(user);
     }
-}
+    }

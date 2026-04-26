@@ -1,6 +1,10 @@
 package com.lelegspears.project_wev_services.resources;
 
+import com.lelegspears.project_wev_services.dtos.UserCreateDTO;
+import com.lelegspears.project_wev_services.dtos.UserResponseDTO;
+import com.lelegspears.project_wev_services.dtos.UserUpdateDTO;
 import com.lelegspears.project_wev_services.entities.User;
+import com.lelegspears.project_wev_services.mappers.UserMapper;
 import com.lelegspears.project_wev_services.services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -20,20 +24,20 @@ public class UserResource {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<User> findById(@PathVariable Long id){
-        User user = service.findById(id);
-        return ResponseEntity.ok().body(user);
+    public ResponseEntity<UserResponseDTO> findById(@PathVariable Long id){
+        UserResponseDTO user = service.findById(id);
+        return ResponseEntity.ok(user);
     }
 
     @GetMapping
-    public ResponseEntity<List<User>> findAll(){
-        List<User> userList = service.findAll();
-        return ResponseEntity.ok().body(userList);
+    public ResponseEntity<List<UserResponseDTO>> findAll(){
+        List<UserResponseDTO> userList = service.findAll();
+        return ResponseEntity.ok(userList);
     }
 
     @PostMapping
-    public ResponseEntity<User> insert(@Valid @RequestBody User user){
-        User newUser = service.insert(user);
+    public ResponseEntity<UserResponseDTO> create(@Valid @RequestBody UserCreateDTO userDTO){
+        UserResponseDTO newUser = service.insert(userDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}").buildAndExpand(newUser.getId())
                 .toUri();
@@ -46,9 +50,9 @@ public class UserResource {
         return ResponseEntity.noContent().build();
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<User> updateById(@PathVariable Long id, @Valid @RequestBody User newData){
-        User user = service.updateById(id, newData);
-        return ResponseEntity.ok().body(user);
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<UserResponseDTO> updateById(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO newData){
+        UserResponseDTO user = service.updateById(id, newData);
+        return ResponseEntity.ok(user);
     }
 }
