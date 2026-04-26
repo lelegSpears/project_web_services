@@ -49,13 +49,14 @@ JSON
   "phone": "11999999999"
 }
 
-GET(By Id):
+GET(By Id):  
 http://localhost:8080/users/{Id}
 
-Get(All):
+
+Get(All):  
 http://localhost:8080/users
 
-Patching:
+Patching:  
 http://localhost:8080/users/{Id}
 JSON
 {
@@ -63,19 +64,5 @@ JSON
   "email": "final@email.com",
   "phone": "11988887777"
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  
 > ⚠️ O Dockerfile foi criado com foco em deploy na plataforma Render.
