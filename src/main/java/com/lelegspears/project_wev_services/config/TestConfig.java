@@ -18,6 +18,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Arrays;
 
@@ -59,13 +60,13 @@ public class TestConfig implements CommandLineRunner {
         Product p1 = new Product();
         p1.setName("PS5");
         p1.setDescription("Console");
-        p1.setPrice(4500.0);
+        p1.setPrice(BigDecimal.valueOf(4500.0));
         p1.setImgURL("img1");
 
         Product p2 = new Product();
         p2.setName("TV");
         p2.setDescription("Smart TV");
-        p2.setPrice(3000.0);
+        p2.setPrice(BigDecimal.valueOf(3000.0));
         p2.setImgURL("img2");
 
         p1.addCategory(c1);

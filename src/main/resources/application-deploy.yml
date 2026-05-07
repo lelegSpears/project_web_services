@@ -11,3 +11,8 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
 
+  data:
+    web:
+      pageable:
+        default-page-size: 10
+        max-page-size: 50
