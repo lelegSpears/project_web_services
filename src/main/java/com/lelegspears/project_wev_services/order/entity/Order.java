@@ -7,9 +7,11 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.io.Serial;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Objects;
@@ -27,6 +29,7 @@ public class Order implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
+    @CreationTimestamp
     @JsonFormat(shape =  JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
     private Instant moment;
 
@@ -38,7 +41,7 @@ public class Order implements Serializable {
     @Getter(AccessLevel.NONE)
     private Integer orderStatus;
 
-    @OneToMany(mappedBy = "id.order")
+    @OneToMany(mappedBy = "id.order", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<OrderItem> items = new HashSet<>();
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
@@ -64,10 +67,10 @@ public class Order implements Serializable {
         return OrderStatus.valueOf(orderStatus);
     }
 
-    public double getTotal() {
-        double sum = 0.0;
+    public BigDecimal getTotal() {
+        BigDecimal sum = BigDecimal.ZERO;
         for (OrderItem x : items) {
-            sum += x.getSubTotal();
+            sum = sum.add(x.getSubTotal());
         }
         return sum;
     }

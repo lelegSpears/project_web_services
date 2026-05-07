@@ -2,13 +2,13 @@ package com.lelegspears.project_wev_services.order.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lelegspears.project_wev_services.product.entity.Product;
-import com.lelegspears.project_wev_services.order.pk.OrderItemPK;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Setter
@@ -24,12 +24,12 @@ public class OrderItem implements Serializable {
     private OrderItemPK id;
 
     private Integer quantity;
-    private Double price;
+    private BigDecimal price;
 
     public OrderItem() {
     }
 
-    public OrderItem(Product product, Order order, Integer quantity, Double price) {
+    public OrderItem(Product product, Order order, Integer quantity, BigDecimal price) {
         this.id = new OrderItemPK(order,product);
         this.quantity = quantity;
         this.price = price;
@@ -52,8 +52,8 @@ public class OrderItem implements Serializable {
         this.id.setProduct(product);
     }
 
-    public Double getSubTotal() {
-        return this.price * this.quantity;
+    public BigDecimal getSubTotal() {
+        return this.price.multiply(BigDecimal.valueOf(this.quantity));
     }
 
     @Override

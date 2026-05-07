@@ -23,6 +23,8 @@ public class Category implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String name;
 
     @Setter(AccessLevel.NONE)

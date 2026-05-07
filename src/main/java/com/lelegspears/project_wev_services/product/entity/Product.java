@@ -9,6 +9,7 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.Setter;
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -22,9 +23,16 @@ public class Product implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Setter(AccessLevel.NONE)
     private Long id;
+
+    @Column(nullable = false)
+
     private String name;
+
     private String description;
-    private Double price;
+
+    @Column(nullable = false)
+    private BigDecimal price;
+
     private String imgURL;
 
     @Setter(AccessLevel.NONE)
@@ -35,6 +43,9 @@ public class Product implements Serializable {
     @Getter(AccessLevel.NONE)
     @OneToMany(mappedBy = "id.product")
     private Set<OrderItem> items = new HashSet<>();
+
+    public Product() {
+    }
 
     public void addCategory(Category category) {
         categories.add(category);

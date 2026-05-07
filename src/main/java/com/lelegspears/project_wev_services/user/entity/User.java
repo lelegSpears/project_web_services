@@ -30,17 +30,15 @@
         @Setter(AccessLevel.NONE)
         private Long id;
 
-        @NotBlank
-        @Size(max = 55)
+        @Column(nullable = false)
         private String name;
 
-        @Email
+        @Column(nullable = false, unique = true)
         private String email;
 
-        @NotBlank
         private String phone;
 
-        @NotBlank
+        @Column(nullable = false)
         @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
         private String password;
 
