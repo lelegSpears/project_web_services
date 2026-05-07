@@ -4,17 +4,17 @@ import com.lelegspears.project_wev_services.user.entity.User;
 import com.lelegspears.project_wev_services.user.dtos.UserCreateDTO;
 import com.lelegspears.project_wev_services.user.dtos.UserResponseDTO;
 import com.lelegspears.project_wev_services.user.dtos.UserUpdateDTO;
-import com.lelegspears.project_wev_services.user.mappers.UserMapper;
+import com.lelegspears.project_wev_services.user.mapper.UserMapper;
 import com.lelegspears.project_wev_services.exception.service.DatabaseException;
 import com.lelegspears.project_wev_services.exception.service.ResourceNotFoundException;
 import com.lelegspears.project_wev_services.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class UserService {
@@ -34,9 +34,9 @@ public class UserService {
         return userMapper.toDTO(user);
     }
 
-    public List<UserResponseDTO> findAll(){
-        List<User> usersList = repository.findAll();
-        return userMapper.toDTOList(usersList);
+    public Page<UserResponseDTO> findAll(Pageable pageable){
+        Page<User> usersList = repository.findAll(pageable);
+        return usersList.map(userMapper::toDTO);
     }
 
     @Transactional
@@ -51,6 +51,7 @@ public class UserService {
     public void deleteById(Long id){
         try {
             repository.deleteById(id);
+            repository.flush();
         } catch (EmptyResultDataAccessException e){
             throw new ResourceNotFoundException(id);
         } catch (DataIntegrityViolationException e){
@@ -59,7 +60,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDTO updateById(Long id, UserUpdateDTO newDataDTO) {
+    public UserResponseDTO partialUpdateById(Long id, UserUpdateDTO newDataDTO) {
         User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
         userMapper.updateEntityFromDTO(newDataDTO, user);
         if (newDataDTO.getPassword() != null && !newDataDTO.getPassword().isBlank()) {
