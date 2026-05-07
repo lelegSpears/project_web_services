@@ -1,4 +1,4 @@
-package com.lelegspears.project_wev_services.user.mappers;
+package com.lelegspears.project_wev_services.user.mapper;
 
 import com.lelegspears.project_wev_services.user.dtos.UserCreateDTO;
 import com.lelegspears.project_wev_services.user.dtos.UserResponseDTO;
@@ -16,10 +16,13 @@ public interface UserMapper {
 
     List<UserResponseDTO> toDTOList(List<User> users);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "orders", ignore = true)
     User toEntity(UserCreateDTO dto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "orders", ignore = true)
     void updateEntityFromDTO(UserUpdateDTO dto, @MappingTarget User user);
 }
