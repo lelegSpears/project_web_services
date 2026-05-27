@@ -6,7 +6,7 @@
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.5.13</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<relativePath/>
 	</parent>
 	<groupId>com.lelegspears</groupId>
 	<artifactId>project-web-services</artifactId>
@@ -118,20 +118,17 @@
 						<configuration>
 							<annotationProcessorPaths>
 
-								<!-- Lombok -->
 								<path>
 									<groupId>org.projectlombok</groupId>
 									<artifactId>lombok</artifactId>
 								</path>
 
-								<!-- MapStruct -->
 								<path>
 									<groupId>org.mapstruct</groupId>
 									<artifactId>mapstruct-processor</artifactId>
 									<version>1.5.5.Final</version>
 								</path>
 
-								<!-- (opcional mas recomendado) binding Lombok + MapStruct -->
 								<path>
 									<groupId>org.projectlombok</groupId>
 									<artifactId>lombok-mapstruct-binding</artifactId>
