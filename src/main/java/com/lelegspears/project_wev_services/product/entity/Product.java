@@ -27,7 +27,6 @@ public class Product implements Serializable {
     private Long id;
 
     @Column(nullable = false)
-
     private String name;
 
     private String description;
