@@ -22,8 +22,8 @@ Novas melhorias serão adicionadas ao longo do tempo.
 - Pedido com múltiplos itens
 - Cálculo automático do total do pedido
 - Associação entre entidades:
-  - Many-to-Many (Produto ↔ Categoria)
-  - One-to-Many (Pedido ↔ Itens)
+  - Many-to-Many (Pedido ↔ Itens)
+  - One-to-Many (Usuário ↔ Pedido)
   - One-to-One (Pedido ↔ Pagamento)
 - Tratamento global de exceções
 
