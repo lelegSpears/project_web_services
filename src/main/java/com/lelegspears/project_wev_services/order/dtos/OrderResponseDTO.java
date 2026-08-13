@@ -4,7 +4,6 @@ import com.lelegspears.project_wev_services.order.enums.OrderStatus;
 import com.lelegspears.project_wev_services.user.dtos.UserResponseDTO;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
