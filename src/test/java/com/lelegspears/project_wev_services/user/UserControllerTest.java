@@ -7,24 +7,16 @@ import com.lelegspears.project_wev_services.user.controller.UserController;
 import com.lelegspears.project_wev_services.user.dtos.UserResponseDTO;
 import com.lelegspears.project_wev_services.user.entity.User;
 import com.lelegspears.project_wev_services.user.service.UserService;
-
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.context.annotation.Import;
-
 import org.springframework.http.MediaType;
-
 import org.springframework.test.web.servlet.MockMvc;
-
 import static org.mockito.BDDMockito.*;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(UserController.class)
@@ -83,7 +75,6 @@ class UserControllerTest {
         verify(service).findById(id);
         verifyNoMoreInteractions(service);
     }
-
     @Test
     void findById_ShouldReturnNotFound_WhenUserDoesNotExist() throws Exception {
 
