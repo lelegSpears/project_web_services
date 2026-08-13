@@ -5,6 +5,7 @@ import com.lelegspears.project_wev_services.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -13,6 +14,7 @@ import java.util.Objects;
 
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_order_item")
 public class OrderItem implements Serializable {
@@ -25,9 +27,6 @@ public class OrderItem implements Serializable {
 
     private Integer quantity;
     private BigDecimal price;
-
-    public OrderItem() {
-    }
 
     public OrderItem(Product product, Order order, Integer quantity, BigDecimal price) {
         this.id = new OrderItemPK(order,product);

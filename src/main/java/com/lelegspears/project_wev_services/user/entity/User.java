@@ -9,6 +9,7 @@
     import jakarta.validation.constraints.Size;
     import lombok.AccessLevel;
     import lombok.Getter;
+    import lombok.NoArgsConstructor;
     import lombok.Setter;
 
     import java.io.Serial;
@@ -20,6 +21,7 @@
     @Setter
     @Getter
     @Entity
+    @NoArgsConstructor
     @Table(name = "tb_user")
     public class User implements Serializable {
         @Serial
@@ -46,9 +48,6 @@
         @JsonIgnore
         @OneToMany(mappedBy = "client")
         private List<Order> orders = new ArrayList<>();
-
-        public User(){
-        }
 
         public User(Long id, String name, String email, String phone, String password) {
             this.id = id;

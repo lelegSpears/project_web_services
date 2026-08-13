@@ -6,6 +6,7 @@ import com.lelegspears.project_wev_services.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -19,6 +20,7 @@ import java.util.Set;
 
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
 @Table(name="tb_order")
 public class Order implements Serializable {
@@ -46,9 +48,6 @@ public class Order implements Serializable {
 
     @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     private Payment payment;
-
-    public Order() {
-    }
 
     public Order(Long id, Instant moment, User client, OrderStatus  orderStatus) {
         this.id = id;

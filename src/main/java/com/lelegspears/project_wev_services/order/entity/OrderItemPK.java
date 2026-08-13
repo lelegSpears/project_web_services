@@ -6,12 +6,14 @@
     import jakarta.persistence.JoinColumn;
     import jakarta.persistence.ManyToOne;
     import lombok.Getter;
+    import lombok.NoArgsConstructor;
     import lombok.Setter;
 
     import java.util.Objects;
 
     @Setter
     @Getter
+    @NoArgsConstructor
     @Embeddable
     public class OrderItemPK {
         @ManyToOne
@@ -21,9 +23,6 @@
         @ManyToOne
         @JoinColumn(name = "product_id")
         private Product product;
-
-        public OrderItemPK() {
-        }
 
         public OrderItemPK(Order order, Product product) {
             this.order = order;

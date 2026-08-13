@@ -7,6 +7,7 @@ import com.lelegspears.project_wev_services.order.entity.OrderItem;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -16,6 +17,7 @@ import java.util.Set;
 
 @Setter
 @Getter
+@NoArgsConstructor
 @Entity
 public class Product implements Serializable {
     private static final long serialVersionUID = 1L;
@@ -43,9 +45,6 @@ public class Product implements Serializable {
     @Getter(AccessLevel.NONE)
     @OneToMany(mappedBy = "id.product")
     private Set<OrderItem> items = new HashSet<>();
-
-    public Product() {
-    }
 
     public void addCategory(Category category) {
         categories.add(category);

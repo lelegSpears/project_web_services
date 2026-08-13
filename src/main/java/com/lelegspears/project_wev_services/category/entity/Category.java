@@ -5,6 +5,7 @@ import com.lelegspears.project_wev_services.product.entity.Product;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
@@ -14,6 +15,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name="tb_category")
 public class Category implements Serializable {
@@ -32,8 +34,6 @@ public class Category implements Serializable {
     @ManyToMany(mappedBy = "categories")
     private Set<Product> products = new HashSet<>();
 
-    public Category() {
-    }
     public Category(String name) {
         this.name = name;
     }

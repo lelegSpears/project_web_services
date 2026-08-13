@@ -3,6 +3,7 @@ package com.lelegspears.project_wev_services.order.entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -12,6 +13,7 @@ import java.util.Objects;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "tb_payment")
 public class Payment implements Serializable {
@@ -26,9 +28,6 @@ public class Payment implements Serializable {
     @MapsId
     @JsonIgnore
     private Order order;
-
-    public Payment(){
-    }
 
     public Payment(Long id, Instant moment, Order order) {
         this.id = id;
