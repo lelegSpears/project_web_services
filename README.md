@@ -46,10 +46,10 @@ POST:
 http://localhost:8080/users
 JSON
 {
-  "name": "Leandro Lazari",
-  "email": "leandro@email.com",
-  "password": "123456",
-  "phone": "11999999999"
+    "username": "leleg",
+    "email": "leleg@email.com",
+    "password": "123256",
+    "phone": "11999999999"
 }
 
 GET(By Id):
