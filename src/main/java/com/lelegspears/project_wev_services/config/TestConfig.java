@@ -1,5 +1,6 @@
 package com.lelegspears.project_wev_services.config;
 
+import com.lelegspears.project_wev_services.infra.security.enums.Role;
 import com.lelegspears.project_wev_services.order.entity.Payment;
 import com.lelegspears.project_wev_services.category.entity.Category;
 import com.lelegspears.project_wev_services.category.repository.CategoryRepository;

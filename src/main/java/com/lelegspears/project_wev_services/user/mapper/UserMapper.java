@@ -9,13 +9,13 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
-
     UserResponseDTO toDTO(User user);
 
     List<UserResponseDTO> toDTOList(List<User> users);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "orders", ignore = true)
+    @Mapping(target = "role", ignore = true)
     User toEntity(UserCreateDTO dto);
 
     @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
