@@ -54,7 +54,7 @@ class UserControllerTest {
         userResponseDTO  = new UserResponseDTO();
 
         userResponseDTO.setId(id);
-        userResponseDTO.setName("Leandro");
+        userResponseDTO.setUsername("Leandro");
         userResponseDTO.setEmail("leandro@email.com");
 
     }

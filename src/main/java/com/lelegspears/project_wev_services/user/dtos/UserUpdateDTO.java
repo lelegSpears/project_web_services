@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 public class UserUpdateDTO {
     @Size(max = 55)
-    private String name;
+    private String username;
 
     @Email
     private String email;

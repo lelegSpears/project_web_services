@@ -53,7 +53,7 @@ class UserServiceTest {
         userResponseDTO  = new UserResponseDTO();
 
         userResponseDTO.setId(id);
-        userResponseDTO.setName("Leandro");
+        userResponseDTO.setUsername("Leandro");
         userResponseDTO.setEmail("leandro@email.com");
 
     }
@@ -68,7 +68,7 @@ class UserServiceTest {
 
         assertNotNull(result);
         assertEquals(id, result.getId());
-        assertEquals("Leandro", result.getName());
+        assertEquals("Leandro", result.getUsername());
         assertEquals("leandro@email.com", result.getEmail());
 
         verify(repository).findById(id);

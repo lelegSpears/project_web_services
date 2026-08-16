@@ -2,6 +2,7 @@
 
     import com.fasterxml.jackson.annotation.JsonIgnore;
     import com.fasterxml.jackson.annotation.JsonProperty;
+    import com.lelegspears.project_wev_services.infra.security.enums.Role;
     import com.lelegspears.project_wev_services.order.entity.Order;
     import jakarta.persistence.*;
     import lombok.AccessLevel;
@@ -29,7 +30,7 @@
         private Long id;
 
         @Column(nullable = false)
-        private String name;
+        private String username;
 
         @Column(nullable = false, unique = true)
         private String email;
@@ -45,9 +46,13 @@
         @OneToMany(mappedBy = "client")
         private List<Order> orders = new ArrayList<>();
 
-        public User(Long id, String name, String email, String phone, String password) {
+        @Enumerated(EnumType.STRING)
+        @Column(nullable = false)
+        private Role role = Role.USER;
+
+        public User(Long id, String username, String email, String phone, String password) {
             this.id = id;
-            this.name = name;
+            this.username = username;
             this.email = email;
             this.phone = phone;
             this.password = password;
