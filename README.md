@@ -46,10 +46,10 @@ POST:
 http://localhost:8080/users
 JSON
 {
-  "name": "Leandro Lazari",
-  "email": "leandro@email.com",
-  "password": "123456",
-  "phone": "11999999999"
+"name": "Leandro Lazari",
+"email": "leandro@email.com",
+"password": "123456",
+"phone": "11999999999"
 }
 
 GET(By Id):
@@ -62,9 +62,10 @@ Patch:
 http://localhost:8080/users/{id}
 JSON
 {
-  "name": "Leandro Final",
-  "email": "final@email.com",
-  "phone": "11988887777"
+"username": "leleg",
+"email": "leleg@email.com",
+"password": "123456",
+"phone": "11999999999"
 }
 
 Delete:
@@ -75,17 +76,17 @@ POST:
 http://localhost:8080/orders
 JSON
 {
-  "clientId": 1,
-  "items": [
-    {
-      "productId": 1,
-      "quantity": 3
-    },
-    {
-      "productId": 2,
-      "quantity": 2
-    }
-  ]
+"clientId": 1,
+"items": [
+{
+"productId": 1,
+"quantity": 3
+},
+{
+"productId": 2,
+"quantity": 2
+}
+]
 }
 
 GET(By Id):
@@ -97,16 +98,16 @@ http://localhost:8080/orders
 Patch:
 http://localhost:8080/orders/{id}
 {
-  "items": [
-    {
-      "productId": 1,
-      "quantity": 6
-    },
-    {
-      "productId": 2,
-      "quantity": 2
-    }
-  ]
+"items": [
+{
+"productId": 1,
+"quantity": 6
+},
+{
+"productId": 2,
+"quantity": 2
+}
+]
 }
 
 Delete:
@@ -118,14 +119,14 @@ POST:
 http://localhost:8080/products
 JSON
 {
-  "name": "Notebook",
-  "description": "Notebook para trabalho",
-  "price": 4500.00,
-  "categoryIds": [
-    1,
-    2
-  ],
-  "imgURL": "https://exemplo.com/notebook.jpg"
+"name": "Notebook",
+"description": "Notebook para trabalho",
+"price": 4500.00,
+"categoryIds": [
+1,
+2
+],
+"imgURL": "https://exemplo.com/notebook.jpg"
 }
 
 GET(By Id):
@@ -138,14 +139,14 @@ Patch:
 http://localhost:8080/products/{id}
 JSON
 {
-  "name": "Notebook Gamer",
-  "description": "Notebook gamer atualizado",
-  "price": 5200.00,
-  "categoryIds": [
-    1,
-    3
-  ],
-  "imgURL": "https://exemplo.com/notebook-gamer.jpg"
+"name": "Notebook Gamer",
+"description": "Notebook gamer atualizado",
+"price": 5200.00,
+"categoryIds": [
+1,
+3
+],
+"imgURL": "https://exemplo.com/notebook-gamer.jpg"
 }
 
 Delete:
@@ -157,7 +158,7 @@ POST:
 http://localhost:8080/categories
 JSON
 {
-  "name": "Eletrônicos"
+"name": "Eletrônicos"
 }
 
 GET(By Id):
@@ -170,7 +171,7 @@ Patch:
 http://localhost:8080/categories/{id}
 JSON
 {
-  "name": "Eletrônicos e Tecnologia"
+"name": "Eletrônicos e Tecnologia"
 }
 
 Delete:
