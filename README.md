@@ -22,8 +22,8 @@ Novas melhorias serão adicionadas ao longo do tempo.
 - Pedido com múltiplos itens
 - Cálculo automático do total do pedido
 - Associação entre entidades:
-  - Many-to-Many (Produto ↔ Categoria)
-  - One-to-Many (Pedido ↔ Itens)
+  - Many-to-Many (Pedido ↔ Itens)
+  - One-to-Many (Usuário ↔ Pedido)
   - One-to-One (Pedido ↔ Pagamento)
 - Tratamento global de exceções
 
@@ -39,3 +39,142 @@ Novas melhorias serão adicionadas ao longo do tempo.
 
 
 > ⚠️ O Dockerfile foi criado com foco em deploy na plataforma Render.
+
+
+## Endpoints de Users
+POST:
+http://localhost:8080/users
+JSON
+{
+  "name": "Leandro Lazari",
+  "email": "leandro@email.com",
+  "password": "123456",
+  "phone": "11999999999"
+}
+
+GET(By Id):
+http://localhost:8080/users/{id}
+
+Get(All):
+http://localhost:8080/users
+
+Patch:
+http://localhost:8080/users/{id}
+JSON
+{
+"username": "leleg",
+"email": "leleg@email.com",
+"password": "123456",
+"phone": "11999999999"
+}
+
+Delete:
+http://localhost:8080/users/{id}
+
+## Endpoints de Orders
+POST:
+http://localhost:8080/orders
+JSON
+{
+  "clientId": 1,
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 3
+    },
+    {
+      "productId": 2,
+      "quantity": 2
+    }
+  ]
+}
+
+GET(By Id):
+http://localhost:8080/orders/{id}
+
+Get(All):
+http://localhost:8080/orders
+
+Patch:
+http://localhost:8080/orders/{id}
+{
+  "items": [
+    {
+      "productId": 1,
+      "quantity": 6
+    },
+    {
+      "productId": 2,
+      "quantity": 2
+    }
+  ]
+}
+
+Delete:
+http://localhost:8080/orders/{id}
+
+## Endpoints de Products
+
+POST:
+http://localhost:8080/products
+JSON
+{
+  "name": "Notebook",
+  "description": "Notebook para trabalho",
+  "price": 4500.00,
+  "categoryIds": [
+    1,
+    2
+  ],
+  "imgURL": "https://exemplo.com/notebook.jpg"
+}
+
+GET(By Id):
+http://localhost:8080/products/{id}
+
+Get(All):
+http://localhost:8080/products
+
+Patch:
+http://localhost:8080/products/{id}
+JSON
+{
+  "name": "Notebook Gamer",
+  "description": "Notebook gamer atualizado",
+  "price": 5200.00,
+  "categoryIds": [
+    1,
+    3
+  ],
+  "imgURL": "https://exemplo.com/notebook-gamer.jpg"
+}
+
+Delete:
+http://localhost:8080/products/{id}
+
+## Endpoints de categories
+
+POST:
+http://localhost:8080/categories
+JSON
+{
+  "name": "Eletrônicos"
+}
+
+GET(By Id):
+http://localhost:8080/categories/{id}
+
+Get(All):
+http://localhost:8080/categories
+
+Patch:
+http://localhost:8080/categories/{id}
+JSON
+{
+  "name": "Eletrônicos e Tecnologia"
+}
+
+Delete:
+http://localhost:8080/categories/{id}
+
+## Endpoints possuem paginação ?page=0&size=10&sort=name
