@@ -46,10 +46,10 @@ POST:
 http://localhost:8080/users
 JSON
 {
-    "username": "leleg",
-    "email": "leleg@email.com",
-    "password": "123256",
-    "phone": "11999999999"
+  "name": "Leandro Lazari",
+  "email": "leandro@email.com",
+  "password": "123456",
+  "phone": "11999999999"
 }
 
 GET(By Id):
@@ -62,9 +62,10 @@ Patch:
 http://localhost:8080/users/{id}
 JSON
 {
-  "name": "Leandro Final",
-  "email": "final@email.com",
-  "phone": "11988887777"
+"username": "leleg",
+"email": "leleg@email.com",
+"password": "123456",
+"phone": "11999999999"
 }
 
 Delete:
