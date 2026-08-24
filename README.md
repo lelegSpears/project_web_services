@@ -46,7 +46,7 @@ POST:
 http://localhost:8080/users
 JSON
 {
-  "name": "Leandro Lazari",
+  "username": "Leandro Lazari",
   "email": "leandro@email.com",
   "password": "123456",
   "phone": "11999999999"
