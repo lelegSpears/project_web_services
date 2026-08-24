@@ -5,6 +5,6 @@ import com.lelegspears.project_wev_services.order.entity.Payment;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
-public interface    PaymentMapper {
+public interface PaymentMapper {
     PaymentResponseDTO toDTO(Payment payment);
 }
