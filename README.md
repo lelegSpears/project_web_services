@@ -6,12 +6,10 @@ Novas melhorias serão adicionadas ao longo do tempo.
 
 ## Tecnologias utilizadas
 
-- Java 21
-- Spring Boot
-- Spring Data JPA / Hibernate
-- PostgreSQL
-- Maven
-- Docker
+Java 21 • Spring Boot • Spring Web • Spring Data JPA • Hibernate 
+• PostgreSQL • Spring Security • JWT • Flyway • MapStruct • Lombok 
+• JUnit • Mockito • Postman • Git
+
 
 
 ## Funcionalidades
@@ -70,6 +68,16 @@ JSON
 
 Delete:
 http://localhost:8080/users/{id}
+
+## Endpoints de Login
+
+Post: http://localhost:8080/auth/login
+JSON
+{
+"username": "Leandro",
+"password": "123456"
+}
+(Devolverá Token com Role USER)
 
 ## Endpoints de Orders
 POST:
@@ -177,4 +185,6 @@ JSON
 Delete:
 http://localhost:8080/categories/{id}
 
-## Endpoints possuem paginação ?page=0&size=10&sort=name
+## Banco H2
+
+ Banco H2 esta ativado para o perfil de testes, para alterar um usuário para a role ADMIN utilize o banco, em breve colocarei uma ENDPOINT de troca de Role.
