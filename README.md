@@ -123,7 +123,7 @@ http://localhost:8080/orders/{id}
 
 ## Endpoints de Products
 
-POST:
+POST(Necessaria a Role de ADMIN):
 http://localhost:8080/products
 JSON
 {
@@ -143,7 +143,7 @@ http://localhost:8080/products/{id}
 Get(All):
 http://localhost:8080/products
 
-Patch:
+Patch(Necessaria a Role de ADMIN):
 http://localhost:8080/products/{id}
 JSON
 {
@@ -157,7 +157,7 @@ JSON
   "imgURL": "https://exemplo.com/notebook-gamer.jpg"
 }
 
-Delete:
+Delete(Necessaria a Role de ADMIN):
 http://localhost:8080/products/{id}
 
 ## Endpoints de categories
