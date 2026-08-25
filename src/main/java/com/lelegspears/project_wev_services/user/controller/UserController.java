@@ -46,12 +46,14 @@ public class UserController {
         return ResponseEntity.created(uri).body(newUser);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PatchMapping(value = "/{id}")
     public ResponseEntity<UserResponseDTO> partialUpdateById(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO newData){
         UserResponseDTO user = service.partialUpdateById(id, newData);

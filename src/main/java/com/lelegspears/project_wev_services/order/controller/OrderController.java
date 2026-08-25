@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
@@ -35,6 +36,7 @@ public class OrderController {
         return ResponseEntity.ok().body(orderList);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping
     public ResponseEntity<OrderResponseDTO> insert(@Valid @RequestBody OrderCreateDTO dto){
         OrderResponseDTO newOrder = service.insert(dto);
@@ -44,12 +46,14 @@ public class OrderController {
         return ResponseEntity.created(uri).body(newOrder);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PatchMapping(value = "/{id}")
     public ResponseEntity<OrderResponseDTO> updateById(@PathVariable Long id, @Valid @RequestBody OrderUpdateDTO dto){
         OrderResponseDTO order = service.updateById(id, dto);
