@@ -66,7 +66,7 @@ public class UserController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PatchMapping(value = "/promote/{id}")
+    @PatchMapping(value = "/demote/{id}")
     public ResponseEntity<UserResponseDTO> demoteToUser(@PathVariable Long id){
         UserResponseDTO user = service.demoteToUser(id);
         return ResponseEntity.ok(user);
