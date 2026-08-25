@@ -6,7 +6,7 @@ import com.lelegspears.project_wev_services.order.entity.Order;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring",uses = OrderItemMapper.class)
 public interface OrderMapper {
     @Mapping(source = "total", target = "total")
     OrderResponseDTO toDTO(Order order);
