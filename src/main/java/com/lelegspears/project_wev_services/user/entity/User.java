@@ -46,6 +46,7 @@
         @OneToMany(mappedBy = "client")
         private List<Order> orders = new ArrayList<>();
 
+        @Setter
         @Enumerated(EnumType.STRING)
         @Column(nullable = false)
         private Role role = Role.USER;

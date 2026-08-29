@@ -1,5 +1,6 @@
 package com.lelegspears.project_wev_services.user.service;
 
+import com.lelegspears.project_wev_services.infra.security.enums.Role;
 import com.lelegspears.project_wev_services.user.entity.User;
 import com.lelegspears.project_wev_services.user.dtos.UserCreateDTO;
 import com.lelegspears.project_wev_services.user.dtos.UserResponseDTO;
@@ -68,4 +69,21 @@ public class UserService {
         }
         return userMapper.toDTO(user);
     }
+
+    @Transactional
+    public UserResponseDTO promoteToAdmin(Long id){
+        User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        user.setRole(Role.ADMIN);
+        User promotedUser = repository.save(user);
+        return userMapper.toDTO(promotedUser);
+    }
+
+    @Transactional
+    public UserResponseDTO demoteToUser(Long id){
+        User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        user.setRole(Role.USER);
+        User promotedUser = repository.save(user);
+        return userMapper.toDTO(promotedUser);
+    }
+
     }

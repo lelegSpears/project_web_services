@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import java.net.URI;
@@ -45,15 +46,31 @@ public class UserController {
         return ResponseEntity.created(uri).body(newUser);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PatchMapping(value = "/{id}")
     public ResponseEntity<UserResponseDTO> partialUpdateById(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO newData){
         UserResponseDTO user = service.partialUpdateById(id, newData);
+        return ResponseEntity.ok(user);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping(value = "/promote/{id}")
+    public ResponseEntity<UserResponseDTO> promoteToAdmin(@PathVariable Long id){
+        UserResponseDTO user = service.promoteToAdmin(id);
+        return ResponseEntity.ok(user);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping(value = "/demote/{id}")
+    public ResponseEntity<UserResponseDTO> demoteToUser(@PathVariable Long id){
+        UserResponseDTO user = service.demoteToUser(id);
         return ResponseEntity.ok(user);
     }
 }
