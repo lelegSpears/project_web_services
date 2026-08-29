@@ -20,17 +20,16 @@ public class JwtService {
 
     public JwtService(@Value("${jwt.secret}") String secret,
                       @Value("${jwt.expiration}") long expirationTime) {
-        this.key = Keys.hmacShaKeyFor(
-                secret.getBytes(StandardCharsets.UTF_8));
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
         this.expirationTime = expirationTime;
     }
 
     public String generateToken(UserDetails userDetails){
         Map<String, Object> claims = new HashMap<>();
 
-        claims.put(
-                "role",
-                userDetails.getAuthorities()
+        claims.put("role",
+                userDetails
+                        .getAuthorities()
                         .iterator()
                         .next()
                         .getAuthority()
