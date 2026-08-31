@@ -63,11 +63,8 @@ public class OrderService {
 
     private void addOrderItems(Set<OrderItemCreateDTO> dto, Order order) {
         for (OrderItemCreateDTO itemDTO : dto) {
-
             Product product = productRepository.findById(itemDTO.getProductId())
-                    .orElseThrow(() ->
-                            new ResourceNotFoundException(itemDTO.getProductId()));
-
+                    .orElseThrow(() -> new ResourceNotFoundException(itemDTO.getProductId()));
             OrderItem item = new OrderItem(
                     product,
                     order,

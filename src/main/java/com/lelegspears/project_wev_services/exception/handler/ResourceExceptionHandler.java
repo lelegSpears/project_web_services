@@ -4,12 +4,15 @@ import com.lelegspears.project_wev_services.exception.service.DatabaseException;
 import com.lelegspears.project_wev_services.exception.service.InvalidOrderStateException;
 import com.lelegspears.project_wev_services.exception.service.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+
+import java.time.Instant;
 
 @ControllerAdvice
 public class ResourceExceptionHandler {
@@ -59,5 +62,22 @@ public class ResourceExceptionHandler {
         }
 
         return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(PropertyReferenceException.class)
+    public ResponseEntity<StandardError> handlePropertyReferenceException(
+            PropertyReferenceException e,
+            HttpServletRequest request) {
+
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        StandardError error = new StandardError(
+                status.value(),
+                "Invalid sorting parameter",
+                e.getMessage(),
+                request.getRequestURI()
+        );
+
+        return ResponseEntity.status(status).body(error);
     }
 }
