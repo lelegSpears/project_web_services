@@ -1,4 +1,4 @@
-package com.lelegspears.project_wev_services.config;
+package com.lelegspears.project_wev_services.infra.config;
 
 import com.lelegspears.project_wev_services.infra.security.enums.Role;
 import com.lelegspears.project_wev_services.order.entity.Payment;
@@ -50,6 +50,14 @@ public class TestConfig implements CommandLineRunner {
 
         // USER
         User u1 = new User(null, "Leandro", "leo@email.com", "11999999999", passwordEncoder.encode("123456"));
+
+        // ADMIN
+        User admin = new User(null, "Admin", "admin@email.com", "11999999999", passwordEncoder.encode("123456")
+        );
+
+        admin.setRole(Role.ADMIN);
+
+        userRepository.save(admin);
 
         // CATEGORY
         Category c1 = new Category("Eletrônicos");
