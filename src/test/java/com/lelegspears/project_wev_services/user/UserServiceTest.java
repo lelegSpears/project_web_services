@@ -91,7 +91,7 @@ class UserServiceTest {
                 () -> service.findById(nonExistId)
         );
 
-        assertEquals("User not found", ex.getMessage());
+        assertEquals("Resource not found. Id 99", ex.getMessage());
 
         verify(repository).findById(nonExistId);
 

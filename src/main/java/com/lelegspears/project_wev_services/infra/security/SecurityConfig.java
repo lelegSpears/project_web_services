@@ -1,5 +1,6 @@
 package com.lelegspears.project_wev_services.infra.security;
 
+import com.lelegspears.project_wev_services.infra.ratelimit.RateLimitFilter;
 import com.lelegspears.project_wev_services.infra.security.handler.CustomAcessDeniedHandler;
 import com.lelegspears.project_wev_services.infra.security.jwt.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
@@ -25,11 +26,13 @@ public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationEntryPoint authenticationEntryPoint;
     private final CustomAcessDeniedHandler acessDeniedHandler;
+    private final RateLimitFilter rateLimitFilter;
 
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationEntryPoint authenticationEntryPoint, CustomAcessDeniedHandler acessDeniedHandler) {
+    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter, AuthenticationEntryPoint authenticationEntryPoint, CustomAcessDeniedHandler acessDeniedHandler, RateLimitFilter rateLimitFilter) {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
         this.authenticationEntryPoint = authenticationEntryPoint;
         this.acessDeniedHandler = acessDeniedHandler;
+        this.rateLimitFilter = rateLimitFilter;
     }
 
     @Bean
@@ -54,7 +57,14 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class
+                )
+                .addFilterBefore(
+                        rateLimitFilter,
+                        JwtAuthenticationFilter.class
+                );
         return http.build();
     }
 
