@@ -61,16 +61,16 @@ public class OrderService {
         return orderMapper.toDTO(order);
     }
 
-    private void addOrderItems(Set<OrderItemCreateDTO> dto, Order order){
+    private void addOrderItems(Set<OrderItemCreateDTO> dto, Order order) {
         for (OrderItemCreateDTO itemDTO : dto) {
             Product product = productRepository.findById(itemDTO.getProductId())
                     .orElseThrow(() -> new ResourceNotFoundException(itemDTO.getProductId()));
-
-            OrderItem item = new OrderItem();
-            item.setProduct(product);
-            item.setOrder(order);
-            item.setQuantity(itemDTO.getQuantity());
-            item.setPrice(product.getPrice());
+            OrderItem item = new OrderItem(
+                    product,
+                    order,
+                    itemDTO.getQuantity(),
+                    product.getPrice()
+            );
 
             order.getItems().add(item);
         }
