@@ -28,8 +28,8 @@ public class RateLimitFilter extends OncePerRequestFilter {
 
     private Bucket createBucket(){
         Bandwidth limit = Bandwidth.builder()
-                .capacity(100)
-                .refillIntervally(100, Duration.ofMinutes(1))
+                .capacity(40) // Quantidade
+                .refillIntervally(40, Duration.ofMinutes(1)) // refil
                 .build();
 
         return Bucket.builder()
@@ -53,7 +53,7 @@ public class RateLimitFilter extends OncePerRequestFilter {
                 HttpStatus.TOO_MANY_REQUESTS.value(),
                 "Too Many Requests",
                 "Rate Limit exceeded",
-                request.getRemoteAddr()
+                request.getRequestURI()
         );
 
         objectMapper.writeValue(response.getWriter(), error);
