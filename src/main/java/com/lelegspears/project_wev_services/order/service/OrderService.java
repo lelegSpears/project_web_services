@@ -21,6 +21,8 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.Set;
 
@@ -44,8 +46,14 @@ public class OrderService {
         return orderMapper.toDTO(order);
     }
 
-    public Page<OrderResponseDTO> findAll(Pageable pageable){
+    public Page<OrderResponseDTO> findAllOrders(Pageable pageable){
         Page<Order> orders = orderRepository.findAll(pageable);
+        return orders.map(orderMapper::toDTO);
+    }
+
+    public Page<OrderResponseDTO> findAllMyOrders(Pageable pageable){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Page<Order> orders = orderRepository.findAllByClientUsername(authentication.getName(), pageable);
         return orders.map(orderMapper::toDTO);
     }
 

@@ -37,10 +37,19 @@ public class OrderController {
         return ResponseEntity.ok().body(order);
     }
 
-    @Operation(summary = "Busca todos os Pedido")
+    @Operation(summary = "Busca todos os Pedidos", description = "Apenas ADMINs podem visualizar todos os pedidos")
+    @PreAuthorize("hasRole('ADMIN')")
+    @SecurityRequirement(name = "bearerAuth")
     @GetMapping
-    public ResponseEntity<Page<OrderResponseDTO>> findAll(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable){
-        Page<OrderResponseDTO> orderList = service.findAll(pageable);
+    public ResponseEntity<Page<OrderResponseDTO>> findAllOrders(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable){
+        Page<OrderResponseDTO> orderList = service.findAllOrders(pageable);
+        return ResponseEntity.ok().body(orderList);
+    }
+
+    @Operation(summary = "Busca todos os próprios Pedidos")
+    @GetMapping(value = "/myOrders")
+    public ResponseEntity<Page<OrderResponseDTO>> findAllMyOrders(@PageableDefault(sort = "id", direction = Sort.Direction.DESC) @ParameterObject Pageable pageable){
+        Page<OrderResponseDTO> orderList = service.findAllMyOrders(pageable);
         return ResponseEntity.ok().body(orderList);
     }
 

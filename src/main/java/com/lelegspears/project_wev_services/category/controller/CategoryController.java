@@ -48,7 +48,7 @@ public class CategoryController {
         return ResponseEntity.ok().body(categoryList);
     }
 
-    @Operation(summary = "Busca Categoria por ID", description = "Apenas ADMINs podem criar Categorías.")
+    @Operation(summary = "Cria Categoria", description = "Apenas ADMINs podem criar Categorías.")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<CategoryResponseDTO> insert(@Valid @RequestBody CategoryCreateDTO category){
