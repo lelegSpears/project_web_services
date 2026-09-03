@@ -4,6 +4,7 @@ import com.lelegspears.project_wev_services.exception.service.DatabaseException;
 import com.lelegspears.project_wev_services.exception.service.InvalidOrderStateException;
 import com.lelegspears.project_wev_services.exception.service.ResourceNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mapping.PropertyReferenceException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,12 +15,16 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.Instant;
 
+@Slf4j
 @ControllerAdvice
 public class ResourceExceptionHandler {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<StandardError> resourceNotFound(ResourceNotFoundException e, HttpServletRequest request) {
         String error = "Resource Not Found";
         HttpStatus status = HttpStatus.NOT_FOUND;
+
+        log.warn("Resource not found: [ path: {}, message: {} ]", request.getRequestURI(), e.getMessage());
+
         StandardError err = new StandardError(status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
@@ -28,6 +33,9 @@ public class ResourceExceptionHandler {
     public ResponseEntity<StandardError> databaseException(DatabaseException e, HttpServletRequest request) {
         String error = "Database error";
         HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        log.error("Database error: [ path: {}, message: {} ]", request.getRequestURI(), e.getMessage(), e);
+
         StandardError err = new StandardError(status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
@@ -37,18 +45,20 @@ public class ResourceExceptionHandler {
 
         String error = "Invalid Order State";
         HttpStatus status = HttpStatus.CONFLICT;
-        StandardError err = new StandardError(status.value(), error, e.getMessage(), request.getRequestURI());
 
+        log.warn("Invalid order state: [ path: {}, message: {} ]", request.getRequestURI(), e.getMessage());
+
+        StandardError err = new StandardError(status.value(), error, e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(status).body(err);
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ValidationError> validation(
-            MethodArgumentNotValidException e,
-            HttpServletRequest request) {
+    public ResponseEntity<ValidationError> validation(MethodArgumentNotValidException e, HttpServletRequest request) {
 
         String error = "Validation Exception";
         HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        log.warn("Validation failed: [ path: {} ]", request.getRequestURI());
 
         ValidationError err = new ValidationError(
                 status.value(),
@@ -58,6 +68,7 @@ public class ResourceExceptionHandler {
         );
 
         for (FieldError f : e.getBindingResult().getFieldErrors()) {
+            log.debug("Validation error: [ field: {}, message: {} ]", f.getField(), f.getDefaultMessage());
             err.addError(f.getField(), f.getDefaultMessage());
         }
 
@@ -70,6 +81,9 @@ public class ResourceExceptionHandler {
             HttpServletRequest request) {
 
         HttpStatus status = HttpStatus.BAD_REQUEST;
+
+
+        log.warn("Invalid sorting parameter: [ path: {}, message: {} ]", request.getRequestURI(), e.getMessage());
 
         StandardError error = new StandardError(
                 status.value(),
