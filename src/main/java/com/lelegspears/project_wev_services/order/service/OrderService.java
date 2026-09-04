@@ -17,6 +17,7 @@ import com.lelegspears.project_wev_services.product.repository.ProductRepository
 import com.lelegspears.project_wev_services.user.entity.User;
 import com.lelegspears.project_wev_services.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
@@ -26,6 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import java.util.Set;
 
+@Slf4j
 @Service
 public class OrderService {
 
@@ -43,22 +45,32 @@ public class OrderService {
 
     public OrderResponseDTO findById(Long id){
         Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+
+        log.info("Order found with Id:{}", id);
+
         return orderMapper.toDTO(order);
     }
 
     public Page<OrderResponseDTO> findAllOrders(Pageable pageable){
         Page<Order> orders = orderRepository.findAll(pageable);
+
+        log.debug("Orders Page found: [ Page:{} size:{} totalElements:{} ]", orders.getNumber(), orders.getSize(), orders.getTotalElements());
+
         return orders.map(orderMapper::toDTO);
     }
 
     public Page<OrderResponseDTO> findAllMyOrders(Pageable pageable){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Page<Order> orders = orderRepository.findAllByClientUsername(authentication.getName(), pageable);
+
+        log.debug("Own Orders Page found: [ Page:{} size:{} totalElements:{} ]", orders.getNumber(), orders.getSize(), orders.getTotalElements());
+
         return orders.map(orderMapper::toDTO);
     }
 
     @Transactional
     public OrderResponseDTO insert(OrderCreateDTO dto){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Order order = new Order();
         User client = userRepository.findById(dto.getClientId())
                 .orElseThrow(() -> new ResourceNotFoundException(dto.getClientId()));
@@ -66,6 +78,9 @@ public class OrderService {
         order.setOrderStatus(OrderStatus.WAITING_PAYMENT);
         addOrderItems(dto.getItems(), order);
         orderRepository.save(order);
+
+        log.info("Order with Id:{} Created By {}]", order.getId(), authentication.getName());
+
         return orderMapper.toDTO(order);
     }
 
@@ -81,14 +96,20 @@ public class OrderService {
             );
 
             order.getItems().add(item);
+
+            log.debug("Item with Id:{} added to Order with Id:{}", item.getId(), order.getId());
         }
     }
 
     @Transactional
     public void deleteById(Long id){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         try {
             orderRepository.deleteById(id);
             orderRepository.flush();
+
+            log.info("Order with Id:{} Deleted By {}", id, authentication.getName());
+
         } catch (EmptyResultDataAccessException e){
             throw new ResourceNotFoundException(id);
         } catch (DataIntegrityViolationException e){
@@ -98,12 +119,16 @@ public class OrderService {
 
     @Transactional
     public OrderResponseDTO updateById(Long id, OrderUpdateDTO newData){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Order order = orderRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
         if(order.getOrderStatus() != OrderStatus.WAITING_PAYMENT){
             throw new InvalidOrderStateException("Orders that are already paid can't get updated.");
         }
         order.getItems().clear();
         orderRepository.flush();
+
+        log.info("Order with Id:{} Updated By {}", id, authentication.getName());
+
         addOrderItems(newData.getItems(), order);
 
         return orderMapper.toDTO(order);
