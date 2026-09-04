@@ -31,3 +31,9 @@
   jwt:
     secret: "12345678910!uma-chave-boa12345678910!"
     expiration: 86400000
+
+  management:
+    endpoints:
+      web:
+        exposure:
+          include: health,info,metrics,prometheus
