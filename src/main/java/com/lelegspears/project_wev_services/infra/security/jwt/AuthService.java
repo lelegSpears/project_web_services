@@ -20,12 +20,12 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public String login(String username, String password) {
+    public String login(String email, String password) {
 
         Authentication authentication =
                 authenticationManager.authenticate(
                         new UsernamePasswordAuthenticationToken(
-                                username,
+                                email,
                                 password
                         )
                 );

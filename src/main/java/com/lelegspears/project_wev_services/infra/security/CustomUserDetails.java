@@ -9,12 +9,12 @@ import java.util.List;
 
 public class CustomUserDetails implements UserDetails {
 
-    private final String username;
+    private final String email;
     private final String password;
     private final Role role;
 
-    public CustomUserDetails(String username, Role role, String password) {
-        this.username = username;
+    public CustomUserDetails(String email, Role role, String password) {
+        this.email = email;
         this.role = role;
         this.password = password;
     }
@@ -31,7 +31,7 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return email;
     }
 
     @Override
