@@ -5,8 +5,8 @@ import jakarta.validation.constraints.NotBlank;
 
 public record LoginRequest(
         @NotBlank
-        @Schema(example = "Admin")
-        String username,
+        @Schema(example = "admin@email.com")
+        String email,
 
         @NotBlank
         @Schema(example = "123456")
