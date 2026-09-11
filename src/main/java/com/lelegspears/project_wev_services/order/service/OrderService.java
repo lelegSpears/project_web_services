@@ -61,7 +61,7 @@ public class OrderService {
 
     public Page<OrderResponseDTO> findAllMyOrders(Pageable pageable){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Page<Order> orders = orderRepository.findAllByClientUsername(authentication.getName(), pageable);
+        Page<Order> orders = orderRepository.findAllByClientEmail(authentication.getName(), pageable);
 
         log.debug("Own Orders Page found: [ Page:{} size:{} totalElements:{} ]", orders.getNumber(), orders.getSize(), orders.getTotalElements());
 
