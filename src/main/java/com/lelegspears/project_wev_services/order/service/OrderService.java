@@ -7,6 +7,7 @@ import com.lelegspears.project_wev_services.order.dtos.OrderResponseDTO;
 import com.lelegspears.project_wev_services.order.dtos.OrderUpdateDTO;
 import com.lelegspears.project_wev_services.order.entity.Order;
 import com.lelegspears.project_wev_services.order.entity.OrderItem;
+import com.lelegspears.project_wev_services.order.entity.Payment;
 import com.lelegspears.project_wev_services.order.enums.OrderStatus;
 import com.lelegspears.project_wev_services.order.mapper.OrderMapper;
 import com.lelegspears.project_wev_services.order.repository.OrderRepository;
@@ -72,11 +73,14 @@ public class OrderService {
     public OrderResponseDTO insert(OrderCreateDTO dto){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         Order order = new Order();
-        User client = userRepository.findById(dto.getClientId())
-                .orElseThrow(() -> new ResourceNotFoundException(dto.getClientId()));
+        Payment newPayment = new Payment();
+        User client = userRepository.findByEmail(authentication.getName())
+                .orElseThrow(() -> new ResourceNotFoundException(authentication.getName()));
         order.setClient(client);
         order.setOrderStatus(OrderStatus.WAITING_PAYMENT);
         addOrderItems(dto.getItems(), order);
+        order.setPayment(newPayment);
+        newPayment.setOrder(order);
         orderRepository.save(order);
 
         log.info("Order with Id:{} Created By {}]", order.getId(), authentication.getName());
