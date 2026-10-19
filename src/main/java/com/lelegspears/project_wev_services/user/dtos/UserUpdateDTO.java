@@ -15,7 +15,7 @@ public class UserUpdateDTO {
     @Email
     private String email;
 
-    @Size(min = 4,max = 40, message = "Password must have at least 4 characters")
+    @Size(min = 6,max = 40, message = "Password must have at least 4 characters")
     private String password;
 
     @Pattern(regexp = "\\d{10,11}", message = "Phone must have 10 or 11 digits")  // Limpar e normalizar futuramente
