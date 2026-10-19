@@ -5,6 +5,7 @@
     import com.lelegspears.project_wev_services.infra.security.enums.Role;
     import com.lelegspears.project_wev_services.order.entity.Order;
     import jakarta.persistence.*;
+    import jakarta.validation.constraints.Email;
     import lombok.AccessLevel;
     import lombok.Getter;
     import lombok.NoArgsConstructor;
@@ -33,6 +34,7 @@
         private String username;
 
         @Column(nullable = false, unique = true)
+        @Email
         private String email;
 
         private String phone;

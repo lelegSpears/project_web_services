@@ -54,25 +54,34 @@ public class UserController {
         return ResponseEntity.created(uri).body(newUser);
     }
 
-    @Operation(summary = "Deleta um Usuário por ID")
+    @Operation(summary = "Deleta um Usuário por ID", description = "Apenas ADMINs podem Deletar Usuários")
     @SecurityRequirement(name = "bearerAuth")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable Long id){
         service.deleteById(id);
         return ResponseEntity.noContent().build();
     }
 
-    @Operation(summary = "Atualiza Usuário por ID")
+    @Operation(summary = "Deleta SUA conta")
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('USER')")
-    @PatchMapping(value = "/{id}")
-    public ResponseEntity<UserResponseDTO> partialUpdateById(@PathVariable Long id, @Valid @RequestBody UserUpdateDTO newData){
-        UserResponseDTO user = service.partialUpdateById(id, newData);
+    @DeleteMapping(value = "/delete/self")
+    public ResponseEntity<Void> deleteById(){
+        service.deleteOwnAccount();
+        return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Atualiza SUA Conta")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PatchMapping(value = "/update")
+    public ResponseEntity<UserResponseDTO> partialUpdateOwnAccount(@Valid @RequestBody UserUpdateDTO newData){
+        UserResponseDTO user = service.partialUpdateOwnAccount(newData);
         return ResponseEntity.ok(user);
     }
 
-    @Operation(summary = "Promove Usuário para ADMIN", description = "Apenas ADMINs podem Promover outros Usuários")
+    @Operation(summary = "Promove Usuário para ADMIN por id", description = "Apenas ADMINs podem Promover outros Usuários")
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(value = "/promote/{id}")
@@ -81,7 +90,7 @@ public class UserController {
         return ResponseEntity.ok(user);
     }
 
-    @Operation(summary = "Rebaixa Usuário para USER", description = "Apenas ADMINs podem Rebaixar outros Usuários")
+    @Operation(summary = "Rebaixa Usuário para USER por id", description = "Apenas ADMINs podem Rebaixar outros Usuários")
     @SecurityRequirement(name = "bearerAuth")
     @PreAuthorize("hasRole('ADMIN')")
     @PatchMapping(value = "/demote/{id}")

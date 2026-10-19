@@ -73,11 +73,25 @@ public class UserService {
     }
 
     @Transactional
-    public UserResponseDTO partialUpdateById(Long id, UserUpdateDTO newDataDTO) {
+    public void deleteOwnAccount(){
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            repository.findByEmail(authentication.getName()).ifPresent(repository::delete);
+            repository.flush();
+            log.info("User with Email:{} Deleted his account", authentication.getName());
+        } catch (EmptyResultDataAccessException e){
+            throw new ResourceNotFoundException("User not Found");
+        } catch (DataIntegrityViolationException e){
+            throw new DatabaseException("Integrity violation: cannot delete entity");
+        }
+    }
+
+    @Transactional
+    public UserResponseDTO partialUpdateOwnAccount(UserUpdateDTO newDataDTO) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        User user = repository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+        User user = repository.findByEmail(authentication.getName()).orElseThrow(() -> new ResourceNotFoundException("User Not Found"));
         userMapper.updateEntityFromDTO(newDataDTO, user);
-        log.info("User with: [ Id: {} Username{} ] Updated by {}", id, user.getUsername(), authentication.getName());
+        log.info("User with Username{} Updated his account", user.getUsername());
         if (newDataDTO.getPassword() != null && !newDataDTO.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(newDataDTO.getPassword()));
         }
