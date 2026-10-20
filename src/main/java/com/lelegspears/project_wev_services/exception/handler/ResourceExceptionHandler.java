@@ -3,6 +3,7 @@ package com.lelegspears.project_wev_services.exception.handler;
 import com.lelegspears.project_wev_services.exception.service.DatabaseException;
 import com.lelegspears.project_wev_services.exception.service.InvalidOrderStateException;
 import com.lelegspears.project_wev_services.exception.service.ResourceNotFoundException;
+import com.lelegspears.project_wev_services.exception.service.StockMaxExceededException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.mapping.PropertyReferenceException;
@@ -76,7 +77,7 @@ public class ResourceExceptionHandler {
     }
 
     @ExceptionHandler(PropertyReferenceException.class)
-    public ResponseEntity<StandardError> handlePropertyReferenceException(
+    public ResponseEntity<StandardError> handlePropertyReferenceException( // Para Pageable
             PropertyReferenceException e,
             HttpServletRequest request) {
 
@@ -93,5 +94,35 @@ public class ResourceExceptionHandler {
         );
 
         return ResponseEntity.status(status).body(error);
+    }
+
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<StandardError> illegalArgumentException(IllegalArgumentException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        log.warn("Invalid argument: [ path: {}, message: {} ]", request.getRequestURI(), e.getMessage());
+
+        StandardError err = new StandardError(
+                status.value(),
+                "Invalid argument",
+                e.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(StockMaxExceededException.class)
+    public ResponseEntity<StandardError> stockMaxExceededException(StockMaxExceededException e, HttpServletRequest request) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        log.warn("Stock Max Exceeded: [ path: {}, message: {} ]", request.getRequestURI(), e.getMessage());
+
+        StandardError err = new StandardError(
+                status.value(),
+                "Stock Max Exceeded",
+                e.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(status).body(err);
     }
 }
