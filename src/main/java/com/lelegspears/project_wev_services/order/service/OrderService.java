@@ -13,8 +13,10 @@ import com.lelegspears.project_wev_services.order.mapper.OrderMapper;
 import com.lelegspears.project_wev_services.order.repository.OrderRepository;
 import com.lelegspears.project_wev_services.exception.service.DatabaseException;
 import com.lelegspears.project_wev_services.exception.service.ResourceNotFoundException;
+import com.lelegspears.project_wev_services.product.dtos.StockDTO;
 import com.lelegspears.project_wev_services.product.entity.Product;
 import com.lelegspears.project_wev_services.product.repository.ProductRepository;
+import com.lelegspears.project_wev_services.product.service.ProductService;
 import com.lelegspears.project_wev_services.user.entity.User;
 import com.lelegspears.project_wev_services.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
@@ -34,12 +36,14 @@ public class OrderService {
 
     private final OrderRepository orderRepository;
     private final ProductRepository productRepository;
+    private final ProductService productService;
     private final OrderMapper orderMapper;
     private final UserRepository userRepository;
 
-    public OrderService(OrderRepository orderRepository, ProductRepository productRepository, OrderMapper orderMapper, UserRepository userRepository) {
+    public OrderService(OrderRepository orderRepository, ProductRepository productRepository, ProductService productService, OrderMapper orderMapper, UserRepository userRepository) {
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
+        this.productService = productService;
         this.orderMapper = orderMapper;
         this.userRepository = userRepository;
     }
@@ -98,6 +102,7 @@ public class OrderService {
                     itemDTO.getQuantity(),
                     product.getPrice()
             );
+            productService.removeStock(new StockDTO(itemDTO.getQuantity()),product.getId());
 
             order.getItems().add(item);
 

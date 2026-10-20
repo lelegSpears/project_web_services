@@ -76,6 +76,19 @@ public class Product implements Serializable {
         this.stockQuantity += quantity;
     }
 
+    public void removeStock(Integer quantity) {
+        if(quantity == null) {
+            throw new IllegalArgumentException("Quantity must not be null");
+        }
+        if(stockQuantity <= 0) {
+            throw new IllegalArgumentException("This Product is out of Stock");
+        }
+        if(quantity > stockQuantity) {
+            throw new IllegalArgumentException("Not enough stock");
+        }
+        this.stockQuantity -= quantity;
+    }
+
     @JsonIgnore
     public Set<Order> getOrders(){
         Set<Order> set = new HashSet<>();

@@ -123,4 +123,12 @@ public class ProductService {
         return productMapper.toDTO(product);
     }
 
+    @Transactional
+    public void removeStock(StockDTO stock, Long productId){
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException(productId));
+        product.removeStock(stock.stockQuantity());
+        productMapper.toDTO(product);
+    }
+
+
 }
