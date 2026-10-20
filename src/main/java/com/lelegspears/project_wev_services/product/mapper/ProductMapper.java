@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses =  {CategoryMapper.class}   )
 public interface ProductMapper {
 
+    @Mapping(source = "stockQuantity", target = "stockQuantity")
     ProductResponseDTO toDTO(Product product);
 
     List<ProductResponseDTO> toDTOs(List<Product> products);
@@ -24,5 +25,6 @@ public interface ProductMapper {
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "items", ignore = true)
     @Mapping(target = "categories", ignore = true)
+    @Mapping(target = "stockQuantity", ignore = true)
     void updateEntity(ProductUpdateDTO dto, @MappingTarget Product product);
 }
