@@ -3,6 +3,7 @@ package com.lelegspears.project_wev_services.product.controller;
 import com.lelegspears.project_wev_services.product.dtos.ProductCreateDTO;
 import com.lelegspears.project_wev_services.product.dtos.ProductResponseDTO;
 import com.lelegspears.project_wev_services.product.dtos.ProductUpdateDTO;
+import com.lelegspears.project_wev_services.product.dtos.StockDTO;
 import com.lelegspears.project_wev_services.product.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -71,6 +72,15 @@ public class ProductController {
     @PatchMapping(value = "/{id}")
     public ResponseEntity<ProductResponseDTO> updateById(@PathVariable Long id, @Valid @RequestBody ProductUpdateDTO newData){
         ProductResponseDTO product = service.updateById(id, newData);
+        return ResponseEntity.ok().body(product);
+    }
+
+    @Operation(summary = "Adiciona quantidade ao estoque", description = "Apenas ADMINs podem adicionar quantidade ao Estoque")
+    @SecurityRequirement(name = "bearerAuth")
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = "/addStock/{productId}")
+    public ResponseEntity<ProductResponseDTO> addStock(@RequestBody @Valid StockDTO stock, @PathVariable Long productId){
+        ProductResponseDTO product = service.addStock(stock, productId);
         return ResponseEntity.ok().body(product);
     }
 }

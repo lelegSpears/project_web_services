@@ -5,6 +5,7 @@ import com.lelegspears.project_wev_services.category.repository.CategoryReposito
 import com.lelegspears.project_wev_services.product.dtos.ProductCreateDTO;
 import com.lelegspears.project_wev_services.product.dtos.ProductResponseDTO;
 import com.lelegspears.project_wev_services.product.dtos.ProductUpdateDTO;
+import com.lelegspears.project_wev_services.product.dtos.StockDTO;
 import com.lelegspears.project_wev_services.product.entity.Product;
 import com.lelegspears.project_wev_services.product.mapper.ProductMapper;
 import com.lelegspears.project_wev_services.product.repository.ProductRepository;
@@ -107,14 +108,19 @@ public class ProductService {
         for(Long id : categoryIds){
             Category category = categoryRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException(id));
-
             product.addCategory(category);
         }
+
         log.debug(
-                "Product categories updated: [ ProductId: {}, Quantity: {} ]",
-                product.getId(),
-                categoryIds.size()
+                "Product categories updated: [ ProductId: {}, Quantity: {} ]", product.getId(), categoryIds.size()
         );
+    }
+
+    @Transactional
+    public ProductResponseDTO addStock(StockDTO stock, Long productId){
+        Product product = productRepository.findById(productId).orElseThrow(() -> new ResourceNotFoundException(productId));
+        product.addStock(stock.stockQuantity());
+        return productMapper.toDTO(product);
     }
 
 }
